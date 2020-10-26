@@ -1,3 +1,6 @@
+require_relative "../tools"
+require 'find'
+
 module RN
   module Commands
     module Notes
@@ -12,12 +15,40 @@ module RN
           '"New note" --book "My book" # Creates a note titled "New note" in the book "My book"',
           'thoughts --book Memoires    # Creates a note titled "thoughts" in the book "Memoires"'
         ]
+        include Tool
+        
+        def call(title:,  **options)
+          begin
 
-        def call(title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+            #Si no se ingreso un book es global
+            !options[:book].nil? ? book = options[:book] : book = "global"
+
+            self.find_note(title,book)
+            self.name_check(title)
+
+            File.open("./app/#{book}/#{title}.rn", 'w')
+            
+            rescue Errno::ENOENT 
+              puts "--------------------------------------------------------------------\n El book indicado, '#{book}', no exite, por favor crealo antes! \n--------------------------------------------------------------------"
+            else 
+              puts "--------------------------------------------------------------------\n Nota creada correctamente! Su nota fue almacenada en el book '#{book}'\n--------------------------------------------------------------------"
+          end
         end
+
+        def find_note (name,book)
+          begin
+            if File.exist?("./app/#{book}/#{name}.rn")
+              puts "--------------------------------------------------------------------\n La nota con el titulo '#{name}' ya existe! \n--------------------------------------------------------------------"
+              abort
+            else 
+              return true
+            end
+              
+          end
+        end 
+        
       end
+
 
       class Delete < Dry::CLI::Command
         desc 'Delete a note'
@@ -31,9 +62,22 @@ module RN
           'thoughts --book Memoires    # Deletes a note titled "thoughts" from the book "Memoires"'
         ]
 
+        include Tool
+
         def call(title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          begin
+            !options[:book].nil? ? book = options[:book] : book = "global"
+
+            self.name_check(title)
+            self.book_exist(book)
+
+            File.delete("./app/#{book}/#{title}.rn")
+              
+            rescue Errno::ENOENT 
+              puts "--------------------------------------------------------------------\n No exite la nota '#{title}'! \n--------------------------------------------------------------------"
+            else 
+              puts "--------------------------------------------------------------------\n Nota eliminada correctamente! Su nota fue eliminada del book '#{book}'\n--------------------------------------------------------------------"
+          end
         end
       end
 
@@ -68,10 +112,25 @@ module RN
           'thoughts thinking --book Memoires         # Changes the title of the note titled "thoughts" from the book "Memoires" to "thinking"'
         ]
 
+        include Tool
+
         def call(old_title:, new_title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          begin
+            !options[:book].nil? ? book = options[:book] : book = "global"
+            #Chequeo si el nombre nuevo es correcto
+            self.name_check(new_title)
+            self.book_exist(book)
+
+            File.rename("./app/#{book}/#{old_title}.rn","./app/#{book}/#{new_title}.rn")
+            rescue Errno::ENOENT 
+              puts "--------------------------------------------------------------------\n No exite la nota '#{old_title}'! \n--------------------------------------------------------------------"
+            else
+              puts "Cambio de nombre exitoso!"
+          end
         end
+        
+        
+
       end
 
       class List < Dry::CLI::Command
@@ -87,10 +146,21 @@ module RN
           '--book Memoires  # Lists notes from the book named "Memoires"'
         ]
 
+        include Tool
+
         def call(**options)
-          book = options[:book]
-          global = options[:global]
-          warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          !options[:book].nil? ? book = options[:book] : book = "global"
+          #Chequeo si el nombre nuevo es correcto
+          self.book_exist(book)
+          book == "global" ? rute = './app' : rute = "./app/#{book}"
+          #global = options[:global]
+          puts "Note list of : #{book}\n--------------------------------------------------------------------"
+          Find.find(rute) do |f|
+            if File.file?(f) 
+              puts File.basename(f) 
+            end
+          end
+          puts "--------------------------------------------------------------------"
         end
       end
 
@@ -106,9 +176,21 @@ module RN
           'thoughts --book Memoires    # Shows a note titled "thoughts" from the book "Memoires"'
         ]
 
+        include Tool
+
         def call(title:, **options)
-          book = options[:book]
-          warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          begin
+            !options[:book].nil? ? book = options[:book] : book = "global"
+            #Chequeo si el nombre nuevo es correcto
+            self.name_check(title)
+            self.book_exist(book)
+
+            note = File.read("./app/#{book}/#{title}.rn")
+            rescue Errno::ENOENT 
+              puts "--------------------------------------------------------------------\n No exite la nota '#{title}'! O no indico el Book al que pertenece!\n--------------------------------------------------------------------"
+            else
+              puts "NOTE : #{title}\n--------------------------------------------------------------------\n#{note}\n--------------------------------------------------------------------"
+          end
         end
       end
     end
