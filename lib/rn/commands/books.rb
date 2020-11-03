@@ -1,3 +1,6 @@
+#https://ruby-doc.org/core-2.7.2/Dir.html#method-i-each
+#https://ruby-doc.org/stdlib-2.4.0/libdoc/find/rdoc/Find.html
+
 module RN
   module Commands
     module Books
@@ -12,7 +15,7 @@ module RN
         ]
 
         def call(name:, **)
-          warn "TODO: Implementar creación del cuaderno de notas con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Models::Book.create(name)
         end
       end
 
@@ -30,7 +33,8 @@ module RN
 
         def call(name: nil, **options)
           global = options[:global]
-          warn "TODO: Implementar borrado del cuaderno de notas con nombre '#{name}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+
+          global ? Models::Book.delete_global() : Models::Book.delete(name)
         end
       end
 
@@ -42,7 +46,9 @@ module RN
         ]
 
         def call(*)
-          warn "TODO: Implementar listado de los cuadernos de notas.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          
+          Models::Book.list()
+          
         end
       end
 
