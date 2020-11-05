@@ -13,5 +13,12 @@ $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 require 'rn'
 
 # Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta
+
+
 Dry::CLI.new(RN::Commands).call
 
+# Cheaquear si el directorio origen existe!
+if !File.exist?(RN::Paths.storage_root_path())
+    Dir.mkdir(RN::Paths.storage_root_path())
+    Dir.mkdir(RN::Paths.book_global_path())
+end 

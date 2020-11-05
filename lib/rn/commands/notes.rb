@@ -19,7 +19,7 @@ module RN
           !options[:book].nil? ? book = options[:book] : book = "global"
           puts book
           Models::Note.create(title,book)
-          warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -37,8 +37,8 @@ module RN
 
         def call(title:, **options)
           !options[:book].nil? ? book = options[:book] : book = "global"
-          Models::Note.delete(title,book)
-          warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Models::Note.delete(title, book)
+          #warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -56,8 +56,7 @@ module RN
 
         def call(title:, **options)
           !options[:book].nil? ? book = options[:book] : book = "global"
-          Models::Note.edit(title,book)
-          warn "TODO: Implementar modificación de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Models::Note.edit(title, book)
         end
       end
 
@@ -76,8 +75,8 @@ module RN
 
         def call(old_title:, new_title:, **options)
           !options[:book].nil? ? book = options[:book] : book = "global"
-          Models::Note.retitle(old_title,new_title,book)
-          warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Models::Note.retitle(old_title, new_title, book)
+          #warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -97,22 +96,17 @@ module RN
         def call(**options)
           book = options[:book]
           global = options[:global]
+          if global 
+            rute = Paths.book_global_path()
+            book = "global"
+          elsif book.nil?
+            rute = Paths.book_path("*/")
+            book = "All"
+          else
+            rute = Paths.book_path(book)
+          end
 
-         Models::Note.list(book,global)
-          # if global 
-          #   Note.list("./app/global", "global") 
-          # elsif book.nil?7
-          #   Note.list("./app","All")
-          # else
-          #   Note.list("./app/#{book}",book)
-          # end
-          
-
-          # !options[:book].nil? ? book = options[:book] : book = "global"
-          # #Chequeo si el nombre nuevo es correcto
-          # self.book_exist(book)
-          # book == "global" ? rute = './app' : rute = "./app/#{book}"
-          warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+         Models::Note.list(book, rute)
         end
       end
 
@@ -131,7 +125,7 @@ module RN
         def call(title:, **options)
           !options[:book].nil? ? book = options[:book] : book = "global"
           Models::Note.show(title,book)
-          warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          #warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
     end

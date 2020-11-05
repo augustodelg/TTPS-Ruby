@@ -33,7 +33,6 @@ module RN
 
         def call(name: nil, **options)
           global = options[:global]
-
           global ? Models::Book.delete_global() : Models::Book.delete(name)
         end
       end
@@ -46,9 +45,7 @@ module RN
         ]
 
         def call(*)
-          
           Models::Book.list()
-          
         end
       end
 
@@ -65,7 +62,7 @@ module RN
         ]
 
         def call(old_name:, new_name:, **)
-          warn "TODO: Implementar renombrado del cuaderno de notas con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          Models::Book.rename(old_name, new_name)
         end
       end
     end
