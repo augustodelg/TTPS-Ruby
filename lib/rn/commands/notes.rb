@@ -1,5 +1,3 @@
-
-
 module RN
   module Commands
     module Notes

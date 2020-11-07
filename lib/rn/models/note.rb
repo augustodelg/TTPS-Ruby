@@ -4,7 +4,7 @@ module RN
 
       extend Tool
       extend Output
-      extend Paths
+      
       def self.create(title, book)
           #Valid if the name is correct and if the book exists
           if self.name_check?(title)

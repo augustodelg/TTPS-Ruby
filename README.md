@@ -1,3 +1,48 @@
+# Diseño
+ 
+En el diseño de la herramienta se busco generar una estructura donde cada parte tenga una función en específica. Esta estructura se entiende como:
+ 
+```
+lib
+├── rn
+│   ├── commands
+│   │   ├── books.rb
+│   │   ├── notes.rb
+│   │   └── version.rb
+│   ├── commands.rb
+│   ├── models
+│   │   ├── book.rb
+│   │   └── note.rb
+│   ├── models.rb
+│   ├── outputs.rb
+│   ├── paths.rb
+│   ├── tools.rb
+│   └── version.rb
+└── rn.rb
+```
+Profundizando en cada parte de la estructura anterior podemos decir:
+ 
+- **commands**: En esta sección se encuentra la logia utilizada para atender los comandos definidos, adicionalmente tiene asignada la tarea de filtrar que lo que indican los comandos para luego enviar a la parte capacitada que realice una determinada acción. Esto se hace para liberar a dicha parte de tener que procesar lo enviado a los comandos.
+ 
+- **models**: Aquí podemos encontrar la lógica de los libros y las notas. Como se mencionó antes veremos que estas clases solo se encargan de lo indicado en sus métodos, tales como create, delete, list, etc. Cabe mencionar que las dos clases, son enriquecidas extendiendo de los módulos Tools y Output, tambien utilizan el modulo Paths, pero no extienden de él(Posteriormente explicaremos la función que cumplen  estos módulos).Estos son implementados para dejar centrado el comportamiento de los libros y notas.
+ 
+- **outputs**: Este módulo solo se encarga de imprimir lo que le indiquen. Se implementó para no dejar la lógica de mostrar los resultados, en las notas y libros. A la hora de querer mostrar algo en consola, estos utilizaran los methods Output para que muestre lo indicado.
+ 
+ - **paths**: En él podremos encontrar centrada la información y el manejo de rutas de la herramienta. Se encuentran la dirección de la ruta raíz de la herramienta y el nombre del directorio global definidos como constantes. Además posee la lógica para generar los paths de los libros y notas. Se coloca esta lógica en este módulo para reutilizar código y además, aislar tanto a las notas como a los libros de calcular cual es el path de una nota como de un libro en concreto.
+ Dándole a cada uno un mecanismo donde envían la información como por ejemplo, el nombre de la nota y en qué libros está ,y este módulo les devuelve el path, basándose en las configuraciones de la herramienta. 
+ 
+- **tools**: En este módulo encontraremos la lógica de "verificaciones", ya que en él se encuentran los métodos para chequear los nombres ingresados y enviados a la herramienta , y la lógica para preguntar si existe una nota o un libro. Para hacer un poco de hincapié en esto último. Los métodos se limitan a buscar lo solicitado y responder lo que se le indico. Por ejemplo si me interesa saber si existe un libro, para que en caso de que exista realice una "x" acción, debería indicarle el nombre del libro y **que deseo que me responda en caso de que exista**, si este **no existe**, responderá lo contrario a lo indicado. Esto nos simplifica la lógica a la hora decidir en base a si un libro o una nota existe. Además de abstraer a las notas de saber de a donde ir a buscar libros y viceversa.
+
+### Informacion
+
+- La herramienta cuenta con una carpeta inicial llamada global. La cual se puede borrar, pero siempre existira.
+
+- Los nombres tanto de libros como notas adminten **solamente** letras y numeros.
+
+- Al utilizar el metodo edit de las notas, se utilizara el editor **nano**. Una guia de como utilizar nano.   **[GUIA](https://www.comoinstalarlinux.com/como-usar-el-editor-nano-linux/2/)  - [Video](https://www.youtube.com/watch?v=RlPmmdcLe8g)**
+
+
+
 # rn
 
 Plantilla para comenzar con el Trabajo Práctico Integrador de la cursada 2020 de la materia

@@ -1,6 +1,3 @@
-#https://ruby-doc.org/core-2.7.2/Dir.html#method-i-each
-#https://ruby-doc.org/stdlib-2.4.0/libdoc/find/rdoc/Find.html
-
 module RN
   module Commands
     module Books
