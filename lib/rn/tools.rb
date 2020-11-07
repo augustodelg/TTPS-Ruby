@@ -1,49 +1,27 @@
 module RN
   module Tool
-      #TODO- Fix the char \ why not reject
-      def name_check(title)
-        puts "aca"
-          if title.match?(/[\/<>:;,?"*.|]+/)
-            
-            return false
-          end
-          return true
-          
-      end 
 
-      #TODO- Make these methods more generic. 
-      #Try to send a block, allowing play with this conditional
-      def book_exist?(rute,tell_me)
-          if File.exist?(rute) && Dir.file?(rute)
-              return tell_me
-          end 
-          return !tell_me
-      end
-
-      def book_not_exist(rute)
-        if File.exist?(rute )
-            puts "--------------------------------------------------------------------\n Ya existe el book '#{book}'! \n--------------------------------------------------------------------"
-            return false
-        end 
-        return true
-      end
-
-      def note_exist(name,book)
-            if File.exist?(Paths.note_path(name,book))
-              puts "--------------------------------------------------------------------\n La nota con el titulo '#{name}' ya existe! \n--------------------------------------------------------------------"
-              return false
-            end
-            return true
-              
-      end
-
-      def note_not_exist(name,book)
-
-        if !File.exist?(Paths.note_path(name,book))
-          puts "--------------------------------------------------------------------\n La nota con el titulo '#{name}' no existe! \n--------------------------------------------------------------------"
+      def name_check?(title)
+        if !title.match?(/^[A-Za-z0-9]+$/)
           return false
         end
         return true
+      end 
+      #Is necessary need indicate what return me
+      def book_exist?(book,tell_me)
+        rute = Paths.book_path(book)
+        if File.exist?(rute) && File.directory?(rute)
+            return tell_me
+        end 
+        return !tell_me
+      end
+
+      def note_exist?(name, book, tell_me)
+        rute = Paths.note_path(name,book)
+          if File.exist?(rute ) && File.file?(rute)
+            return tell_me
+          end
+          return !tell_me
       end
           
   end

@@ -4,24 +4,16 @@ module RN
 
       extend Tool
       extend Output
-      
-      def self.note_path(name, book)
-        return File.join(Paths::STORAGE_ROOT, book,"#{name}.rn")
-      end
-
+      extend Paths
       def self.create(title, book)
-
-          #Genre the route
-          path_book = self.note_path(title,book)
-
           #Valid if the name is correct and if the book exists
-          if self.name_check(title)
-            if self.book_exist?(rute,true)
-              if self.note_exist(title,book)
-                
+          if self.name_check?(title)
+            if self.book_exist?(book,true)
+              if self.note_exist?(title,book, false)
+                #Genre the route
+                path = Paths.note_path(title,book)
                 #created the file
-                File.open( path_ , 'w')
-                #puts "--------------------------------------------------------------------\n Nota creada correctamente! Su nota fue almacenada en el book '#{book}'\n--------------------------------------------------------------------"
+                File.open( path , 'w')
                 self.success("Nota #{title} creada")
               else self.exist(title)
               end
@@ -32,18 +24,19 @@ module RN
       end
         
       def self.delete(title, book)
-        #Genre the route
-        path = self.note_path(title,book)
+
 
         #Valid if the name is correct and if the book exists
-        if self.name_check(title)
+        if self.name_check?(title)
           if self.book_exist?(book,true)
-            if self.note_not_exist(title, book)
-              
+            if self.note_exist?(title, book, true)
+              #Genre the route
+              path = Paths.note_path(title,book)
+
               #Deleted the file
               File.delete(path)
               self.success("Nota #{title} eliminada")
-              #puts "--------------------------------------------------------------------\n Nota eliminada correctamente! Su nota fue eliminada del book '#{book}'\n--------------------------------------------------------------------"
+              
             else self.not_exist(title)
             end
           else self.not_exist(book)
@@ -55,16 +48,19 @@ module RN
       def self.retitle(old_title, new_title, book)
         
         #Valid if the name is correct and if the book exists
-        if self.name_check(new_title)
+        if self.name_check?(new_title)
           if self.book_exist?(book,true)
-            if self.note_not_exist(old_title)
-              #Genere the route of old path and new path
-              old_path = self.note_path(old_title, book)
-              new_path = self.note_path(new_title, book)
+            if self.note_exist?(old_title, book, true)
+              if self.note_exist?(new_title, book, false)
+                #Genere the route of old path and new path
+                old_path = Paths.note_path(old_title, book)
+                new_path = Paths.note_path(new_title, book)
 
-              File.rename(old_path, new_path)
-              self.success("Cambio de nombre")
-            else self.not_exist(title)
+                File.rename(old_path, new_path)
+                self.success("Cambio de nombre")
+              else self.exist(new_title)
+              end
+            else self.not_exist(old_title)
             end
           else self.not_exist(book)
           end
@@ -79,21 +75,19 @@ module RN
           else
             exist = self.book_exist?(book,true)
         end
-
         if exist
-          notes = Dir.glob(File.join(rute + "*.rn")).map{|each| book == "All" ? each = (each[4..]).sub('/', ' <--- ') : each = File.basename(each)}
-          self.show(notes)
+          notes = Dir.glob(File.join(rute, "*.rn")).map{|each| book == "All" ? each = (each[4..]).sub('/', ' <--- ') : each = File.basename(each)}
+          self.show_info(notes)
         else self.not_exist(book)
         end
       end
 
-      #TODO- Fix that note do be exist for be edit 
       def self.edit(title,book)
         
-        if self.name_check(title)
+        if self.name_check?(title)
           if self.book_exist?(book,true)
-            if self.note_not_exist(title,book)
-              rute = self.note_path(title, book)
+            if self.note_exist?(title,book, true)
+              rute = Paths.note_path(title, book)
               TTY::Editor.open(rute ,command:"nano -w")
             end
           end
@@ -102,12 +96,11 @@ module RN
 
       def self.show(title,book)
           #Checking if the new name is correct
-          if self.name_check(title)
+          if self.name_check?(title)
             if self.book_exist?(book,true)
-              if self.note_not_exist(title,book)
-                rute = self.note_path(title, book)
-                note = File.read(rute)
-                puts "NOTE : #{title}\n--------------------------------------------------------------------\n#{note}\n--------------------------------------------------------------------"
+              if self.note_exist?(title,book, true)
+                note = File.read(Paths.note_path(title, book))
+                self.show_info(note)
               else self.not_exist(title)
               end
             else self.not_exist(book)
