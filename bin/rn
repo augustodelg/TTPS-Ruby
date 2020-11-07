@@ -9,16 +9,18 @@ Bundler.require :default
 # Agrega el directorio `lib' del proyecto al load path de Ruby
 $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 
+
+
 # Requiere `lib/rn.rb` como punto de partida para cargar todas las definiciones necesarias
 require 'rn'
 
-# Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta
-
-
-Dry::CLI.new(RN::Commands).call
-
-# Cheaquear si el directorio origen existe!
+# Cheaquear si el directorio origen existe,y si no existe lo creo !
 if !File.exist?(RN::Paths::STORAGE_ROOT)
     Dir.mkdir(RN::Paths::STORAGE_ROOT)
     Dir.mkdir(RN::Paths.book_global_path())
 end 
+
+# Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta
+
+Dry::CLI.new(RN::Commands).call
+
