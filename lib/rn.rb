@@ -9,5 +9,6 @@ module RN
   autoload :Models, 'rn/models'
   autoload :Paths, 'rn/paths'
   autoload :Tool, 'rn/tools'
+  autoload :Output, 'rn/outputs'
 
 end

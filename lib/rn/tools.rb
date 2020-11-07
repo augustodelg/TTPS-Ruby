@@ -2,27 +2,26 @@ module RN
   module Tool
       #TODO- Fix the char \ why not reject
       def name_check(title)
-          if (title.match?(/[<>:;,?"*|\/.]+/)) 
-              puts """
-              Algun nombre ingresado es invalido! 
-              No se puede ingresar los siguientes caracteres en el nombre de la nota:  <, >, *, :, ; , /,\,|"""
-              return false
+        puts "aca"
+          if title.match?(/[\/<>:;,?"*.|]+/)
+            
+            return false
           end
           return true
+          
       end 
 
       #TODO- Make these methods more generic. 
       #Try to send a block, allowing play with this conditional
-      def book_exist(book)
-          if !File.exist?( Paths.book_path(book))
-              puts "--------------------------------------------------------------------\n No existe el book '#{book}'! \n--------------------------------------------------------------------"
-              return false
+      def book_exist?(rute,tell_me)
+          if File.exist?(rute) && Dir.file?(rute)
+              return tell_me
           end 
-          return true
+          return !tell_me
       end
 
-      def book_not_exist(book)
-        if File.exist?(Paths.book_path(book))
+      def book_not_exist(rute)
+        if File.exist?(rute )
             puts "--------------------------------------------------------------------\n Ya existe el book '#{book}'! \n--------------------------------------------------------------------"
             return false
         end 

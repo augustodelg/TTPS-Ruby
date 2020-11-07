@@ -18,7 +18,7 @@ require 'rn'
 Dry::CLI.new(RN::Commands).call
 
 # Cheaquear si el directorio origen existe!
-if !File.exist?(RN::Paths.storage_root_path())
-    Dir.mkdir(RN::Paths.storage_root_path())
+if !File.exist?(RN::Paths::STORAGE_ROOT)
+    Dir.mkdir(RN::Paths::STORAGE_ROOT)
     Dir.mkdir(RN::Paths.book_global_path())
 end 

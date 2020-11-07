@@ -4,11 +4,17 @@ module RN
     module Models
         class Book
             extend Tool
+            extend Output
+            def self.book_path(book)
+                return File.join(Paths.storage_root_path(), book)
+            end
+    
             def self.create (name)
                 if self.book_not_exist(name)
-                    rute = Paths.book_path(name)
-                    Dir.mkdir(rute)
-                    puts "--------------------------------------------------------------------\n Book '#{name}' creado exitosamente! \n--------------------------------------------------------------------"    
+                    Dir.mkdir(self.book_path(name))
+                    self.success("Creacion de #{name}")
+                    #puts "--------------------------------------------------------------------\n Book '#{name}' creado exitosamente! \n--------------------------------------------------------------------"    
+                else self.exist(name)
                 end
 
             end
@@ -16,14 +22,16 @@ module RN
             def self.delete(name)
                 if self.book_exist(name)
                     begin
-                    rute_book = Paths.book_path(name)
-                    Dir.delete(rute_book)
+                    Dir.delete(self.book_path(name))
                     rescue Errno::ENOTEMPTY
                         puts "La carpeta que desea borrar contiene notas, esta seguro que desea borrarla? (yes/no)"
                         option = $stdin.gets
-                        option.match?(/y(?:es)?|1/) if FileUtils.rm_rf(rute_book)
-                
+                        if option.match?(/y(?:es)?|1/) 
+                            FileUtils.rm_rf(rute_book)
+                            Output.success("Eliminacion de #{name}")
+                        end
                     end
+                    
                 end    
             end
 
@@ -33,10 +41,9 @@ module RN
             end
 
             def self.list()
-                rute = Paths.storage_root_path()
-                puts "--------------------------------------------------------------------\n"
-                Dir.each_child(rute) {|dir| puts dir}
-                puts "--------------------------------------------------------------------\n"
+                rute = Paths::STORAGE_ROOT
+                array_books = Dir.children(rute) 
+                Output.show(array_books)
             end
 
             def self.rename(old_name, new_name)
@@ -45,11 +52,12 @@ module RN
                     if self.book_exist(old_name)
                         if self.book_not_exist(new_name)
                         #Genere the route of old path and new path
-                        old_path = Paths.book_path(old_name)
-                        new_path = Paths.book_path(new_name)
+                        old_path = self.book_path(old_name)
+                        new_path = self.book_path(new_name)
                         File.rename(old_path, new_path)
                         end
                     end
+                else Output.name_check_error()
                 end
             end
         end

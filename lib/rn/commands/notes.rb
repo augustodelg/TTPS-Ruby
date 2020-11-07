@@ -16,7 +16,7 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = "global"
+          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           puts book
           Models::Note.create(title,book)
           #warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
@@ -36,7 +36,7 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = "global"
+          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           Models::Note.delete(title, book)
           #warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -55,7 +55,7 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = "global"
+          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           Models::Note.edit(title, book)
         end
       end
@@ -74,7 +74,7 @@ module RN
         ]
 
         def call(old_title:, new_title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = "global"
+          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           Models::Note.retitle(old_title, new_title, book)
           #warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -105,7 +105,6 @@ module RN
           else
             rute = Paths.book_path(book)
           end
-
          Models::Note.list(book, rute)
         end
       end
@@ -123,7 +122,7 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = "global"
+          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           Models::Note.show(title,book)
           #warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
