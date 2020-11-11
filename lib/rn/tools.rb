@@ -2,11 +2,12 @@ module RN
   module Tool
 
       def name_check?(title)
-        if !title.match?(/^[A-Za-z0-9]+$/)
+        if !title.match?(/^[A-Za-z0-9\s]+$/)
           return false
         end
         return true
       end 
+      
       #Is necessary need indicate what return me
       def book_exist?(book,tell_me)
         rute = Paths.book_path(book)

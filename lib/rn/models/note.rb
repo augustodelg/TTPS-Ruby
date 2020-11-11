@@ -76,7 +76,7 @@ module RN
             exist = self.book_exist?(book,true)
         end
         if exist
-          notes = Dir.glob(File.join(rute, "*.rn")).map{|each| book == "All" ? each = (each[4..]).sub('/', ' <--- ') : each = File.basename(each)}
+          notes = Dir.glob(File.join(rute, "*.rn")).map{|each| book == "All" ? each = (each[18..]).sub('/', ' <-- ') : each = File.basename(each)}
           self.show_info(notes)
         else self.not_exist(book)
         end

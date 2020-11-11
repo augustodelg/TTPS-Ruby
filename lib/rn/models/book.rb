@@ -30,7 +30,11 @@ module RN
                             end
                         end
                         # Sampling that was eliminated if you enter yes, in case of be need puts yes. 
-                        self.success("Eliminacion de #{name}")  if !option.match?(/n(?:o)?|1/) && option.match?(/y(?:es)?|1/) 
+                        if !option.nil?
+                            self.success("Eliminacion de #{name}")  if !option.match?(/n(?:o)?|1/) && option.match?(/y(?:es)?|1/) 
+                        else
+                            self.success("Eliminacion de #{name}")
+                        end
                     else self.not_exist(name)
                     end    
                 else self.name_check_error()

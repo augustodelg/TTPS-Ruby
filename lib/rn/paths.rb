@@ -1,5 +1,4 @@
 module RN
-
     module Paths
         STORAGE_ROOT = File.join(Dir.home,".my_rns")
         GLOBAL_DIR_NAME = "global"
