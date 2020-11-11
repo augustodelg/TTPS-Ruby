@@ -33,7 +33,12 @@ Profundizando en cada parte de la estructura anterior podemos decir:
  
 - **tools**: En este módulo encontraremos la lógica de "verificaciones", ya que en él se encuentran los métodos para chequear los nombres ingresados y enviados a la herramienta , y la lógica para preguntar si existe una nota o un libro. Para hacer un poco de hincapié en esto último. Los métodos se limitan a buscar lo solicitado y responder lo que se le indico. Por ejemplo si me interesa saber si existe un libro, para que en caso de que exista realice una "x" acción, debería indicarle el nombre del libro y **que deseo que me responda en caso de que exista**, si este **no existe**, responderá lo contrario a lo indicado. Esto nos simplifica la lógica a la hora decidir en base a si un libro o una nota existe. Además de abstraer a las notas de saber de a donde ir a buscar libros y viceversa.
 
-### Informacion
+### Gemas
+- **[Dry-cli](https://dry-rb.org/gems/dry-cli/0.6/)**: es una framework de proposito general, que nos permite desarrollar aplicaciones de Command Line Interface (CLI) .
+- **[Tty-editor](https://github.com/piotrmurach/tty-editor)**: nos provee una forma facil y sencilla de incorporar el uso de editores de texto a nuestra aplicacion resolviendo muchos inconvenientes que podrian aparecer.
+
+### Información
+
 
 - La herramienta cuenta con una carpeta inicial llamada global. La cual se puede borrar, pero siempre existira.
 
