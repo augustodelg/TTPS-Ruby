@@ -25,7 +25,11 @@ Profundizando en cada parte de la estructura anterior podemos decir:
 - **commands**: En esta sección se encuentra la logica utilizada para atender los comandos definidos, adicionalmente tiene asignada la tarea de filtrar que lo que indican los comandos para luego enviar a la parte capacitada que realice una determinada acción. Esto se hace para liberar a dicha parte de tener que procesar lo enviado a los comandos.
  
 - **models**: Aquí podemos encontrar la lógica de los libros y las notas. Como se mencionó antes veremos que estas clases solo se encargan de lo indicado en sus métodos, tales como create, delete, list, etc. Cabe mencionar que las dos clases, son enriquecidas extendiendo de los módulos Tools y Output, tambien utilizan el modulo Paths, pero no extienden de él(Posteriormente explicaremos la función que cumplen  estos módulos).Estos son implementados para dejar centrado el comportamiento de los libros y notas.
- 
+
+    -  **note**: Encontraremos la logica para realizar el CRUD de las notas. Su implementación es una clase, la cual dispone solamente de metodos de clase, ya que se considero que esta clase solamente ejecuta acciones y no justifica realizar una instancia cada vez que se desee realizar una accion.
+
+    -  **book**: Se aplica la misma idea que en Notas.
+
 - **outputs**: Este módulo solo se encarga de imprimir lo que le indiquen. Se implementó para no dejar la lógica de mostrar los resultados, en las notas y libros. A la hora de querer mostrar algo en consola, estos utilizaran los methods Output para que muestre lo indicado.
  
  - **paths**: En él podremos encontrar centrada la información y el manejo de rutas de la herramienta. Se encuentran la dirección de la ruta raíz de la herramienta y el nombre del directorio global definidos como constantes. Además posee la lógica para generar los paths de los libros y notas. Se coloca esta lógica en este módulo para reutilizar código y además, aislar tanto a las notas como a los libros de calcular cual es el path de una nota como de un libro en concreto.
