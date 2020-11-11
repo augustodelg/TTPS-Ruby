@@ -52,7 +52,7 @@ module RN
                 old_path = Paths.note_path(old_title, book)
                 new_path = Paths.note_path(new_title, book)
                 File.rename(old_path, new_path)
-                self.success("Cambio de nombre")
+                self.success("Cambio de nombre de #{old_title} a #{new_title} ")
               else self.exist(new_title)
               end
             else self.not_exist(old_title)
