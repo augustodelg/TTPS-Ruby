@@ -1,11 +1,8 @@
 module RN
-  module Tool
+  module Validator
 
       def name_check?(title)
-        if !title.match?(/^[A-Za-z0-9\s]+$/)
-          return false
-        end
-        return true
+        return title.match?(/^[A-Za-z0-9\s]+$/)
       end 
       
       #Is necessary need indicate what return me

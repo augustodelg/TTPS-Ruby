@@ -16,7 +16,7 @@ lib
 │   ├── models.rb
 │   ├── outputs.rb
 │   ├── paths.rb
-│   ├── tools.rb
+│   ├── validator.rb
 │   └── version.rb
 └── rn.rb
 ```
@@ -33,9 +33,9 @@ Profundizando en cada parte de la estructura anterior podemos decir:
 - **outputs**: Este módulo solo se encarga de imprimir lo que le indiquen. Se implementó para no dejar la lógica de mostrar los resultados, en las notas y libros. A la hora de querer mostrar algo en consola, estos utilizaran los methods Output para que muestre lo indicado.
  
  - **paths**: En él podremos encontrar centrada la información y el manejo de rutas de la herramienta. Se encuentran la dirección de la ruta raíz de la herramienta y el nombre del directorio global definidos como constantes. Además posee la lógica para generar los paths de los libros y notas. Se coloca esta lógica en este módulo para reutilizar código y además, aislar tanto a las notas como a los libros de calcular cual es el path de una nota como de un libro en concreto.
- Dándole a cada uno un mecanismo donde envían la información como por ejemplo, el nombre de la nota y en qué libros está ,y este módulo les devuelve el path, basándose en las configuraciones de la herramienta. 
- 
-- **tools**: En este módulo encontraremos la lógica de "verificaciones", ya que en él se encuentran los métodos para chequear los nombres ingresados y enviados a la herramienta , y la lógica para preguntar si existe una nota o un libro. Para hacer un poco de hincapié en esto último. Los métodos se limitan a buscar lo solicitado y responder lo que se le indico. Por ejemplo si me interesa saber si existe un libro, para que en caso de que exista realice una "x" acción, debería indicarle el nombre del libro y **que deseo que me responda en caso de que exista**, si este **no existe**, responderá lo contrario a lo indicado. Esto nos simplifica la lógica a la hora decidir en base a si un libro o una nota existe. Además de abstraer a las notas de saber de a donde ir a buscar libros, y viceversa.
+ Dándole a cada uno un mecanismo donde envían la información como por ejemplo, el nombre de la nota y en qué libros está ,y este módulo les devuelve el path, basándose en las configuraciones de la herramienta.
+
+- **validator**: En este módulo encontraremos la lógica de "verificaciones", ya que en él se encuentran los métodos para chequear los nombres ingresados y enviados a la herramienta , y la lógica para preguntar si existe una nota o un libro. Para hacer un poco de hincapié en esto último. Los métodos se limitan a buscar lo solicitado y responder lo que se le indico. Por ejemplo si me interesa saber si existe un libro, para que en caso de que exista realice una "x" acción, debería indicarle el nombre del libro y **que deseo que me responda en caso de que exista**, si este **no existe**, responderá lo contrario a lo indicado. Esto nos simplifica la lógica a la hora decidir en base a si un libro o una nota existe. Además de abstraer a las notas de saber de a donde ir a buscar libros, y viceversa.
 
 ### Gemas
 - **[Dry-cli](https://dry-rb.org/gems/dry-cli/0.6/)**: es una framework de proposito general, que nos permite desarrollar aplicaciones de Command Line Interface (CLI) .

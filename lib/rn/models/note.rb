@@ -2,7 +2,7 @@ module RN
   module Models
     class Note
 
-      extend Tool
+      extend Validator
       extend Output
       
       def self.create(title, book)
@@ -24,15 +24,12 @@ module RN
       end
         
       def self.delete(title, book)
-
-
         #Valid if the name is correct and if the book exists
         if self.name_check?(title)
           if self.book_exist?(book,true)
             if self.note_exist?(title, book, true)
               #Genre the route
               path = Paths.note_path(title,book)
-
               #Deleted the file
               File.delete(path)
               self.success("Nota #{title} eliminada")
@@ -45,8 +42,7 @@ module RN
         end
       end
 
-      def self.retitle(old_title, new_title, book)
-        
+      def self.retitle(old_title, new_title, book) 
         #Valid if the name is correct and if the book exists
         if self.name_check?(new_title)
           if self.book_exist?(book,true)
@@ -55,7 +51,6 @@ module RN
                 #Genere the route of old path and new path
                 old_path = Paths.note_path(old_title, book)
                 new_path = Paths.note_path(new_title, book)
-
                 File.rename(old_path, new_path)
                 self.success("Cambio de nombre")
               else self.exist(new_title)
@@ -69,7 +64,6 @@ module RN
       end
       
       def self.list(book, rute)
-
         unless book != "All"
             exist = true
           else
@@ -95,7 +89,6 @@ module RN
       end
 
       def self.show(title,book)
-          #Checking if the new name is correct
           if self.name_check?(title)
             if self.book_exist?(book,true)
               if self.note_exist?(title,book, true)
