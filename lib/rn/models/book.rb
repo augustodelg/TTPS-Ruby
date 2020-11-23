@@ -1,39 +1,61 @@
 module RN 
     module Models
         class Book
-            extend Tool
-            extend Output
-    
-            def self.create (name)
-                if self.name_check?(name)
-                    if self.book_exist?(name, false)
+            
+            #extend Output
+            GLOBAL_BOOK_NAME = 'global'
+
+            attr_accessor :name
+
+            extend RN::Tool
+
+            def initialize(name)
+                self.name = name
+            end
+            
+            #Class methods
+
+            def self.global
+                new GLOBAL_BOOK_NAME
+            end
+
+            def self.list()
+                rute = Paths::STORAGE_ROOT
+                array_books = Dir.children(rute) 
+                #self.show_info(array_books)
+                return array_books
+            end
+
+            def path()
+                return File.join(Paths::STORAGE_ROOT, self.name)
+            end
+
+            def exist?()
+                return File.exist?(self.path())
+            end
+
+            def create()
+                if self.name_check?(self.name)
+                    if not self.exist?()
                         Dir.mkdir(Paths.book_path(name))
-                        self.success("Creacion de #{name}")
-                    else self.exist(name)
+                        return True
                     end
-                else self.name_check_error()
                 end
+                return False
+            end
+
+            def delete_all()
+                FileUtils.rm_rf(rute_book)
             end
 
             def self.delete(name)
                 if self.name_check?(name)
-                    if self.book_exist?(name, true)
-                        begin
+                    if self.exist?()
                         rute_book = Paths.book_path(name)
                         Dir.delete(rute_book)
-                        #If the book not empty, need ask if secure delete this
-                        rescue Errno::ENOTEMPTY
-                            puts "La carpeta que desea borrar contiene notas, esta seguro que desea borrarla? (yes/no)"
-                            option = $stdin.gets
-                            if option.match?(/y(?:es)?|1/) 
-                                FileUtils.rm_rf(rute_book)
-                            end
-                        end
-                        # Sampling that was eliminated if you enter yes, in case of be need puts yes. 
-                        self.success("Eliminacion de #{name}")  if !option.match?(/n(?:o)?|1/) && option.match?(/y(?:es)?|1/) 
-                    else self.not_exist(name)
-                    end    
-                else self.name_check_error()
+                        return True   
+                    end
+                return False
                 end
             end
 
@@ -42,25 +64,21 @@ module RN
                 self.create("global")
             end
 
-            def self.list()
-                rute = Paths::STORAGE_ROOT
-                array_books = Dir.children(rute) 
-                self.show_info(array_books)
-            end
-
             def self.rename(old_name, new_name)
 
-                if self.name_check?(new_name)
-                    if self.book_exist?(old_name, true)
-                        if self.book_exist(new_name, false)
-                        #Genere the route of old path and new path
-                        old_path = Paths.book_path(old_name)
-                        new_path = Paths.book_path(new_name)
-                        File.rename(old_path, new_path)
+                if self.name_check?(new_name) && self.name_check?(old_name)
+                    if self.exist?()
+                        old_book = new (old_name)
+                        if not old_book.exist?()
+                            #Genere the route of old path and new path
+                            old_path = Paths.book_path(old_name)
+                            new_path = Paths.book_path(new_name)
+                            File.rename(old_path, new_path)
+                            return True
                         end
                     end
-                else self.name_check_error()
                 end
+                return False
             end
         end
     end

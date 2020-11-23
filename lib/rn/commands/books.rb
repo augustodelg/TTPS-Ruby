@@ -1,3 +1,4 @@
+# TODO - MODIFY THIS CLASS, FOR IMPLEMENT A NEW MODEL.
 module RN
   module Commands
     module Books
@@ -12,7 +13,8 @@ module RN
         ]
 
         def call(name:, **)
-          Models::Book.create(name)
+          book = Models::Book.new(name)
+          book.create()
         end
       end
 
@@ -29,8 +31,19 @@ module RN
         ]
 
         def call(name: nil, **options)
-          global = options[:global]
-          global ? Models::Book.delete_global() : Models::Book.delete(name)
+          begin
+            global = options[:global]
+            global ? Models::Book.delete_global() : Models::Book.delete(name)
+            #If the book not empty, need ask if secure delete this
+            rescue Errno::ENOTEMPTY
+              puts "La carpeta que desea borrar contiene notas, esta seguro que desea borrarla? (yes/no)"
+              option = $stdin.gets
+              if option.match?(/y(?:es)?|1/) 
+                  FileUtils.rm_rf(rute_book)
+              end
+          end
+          # Sampling that was eliminated if you enter yes, in case of be need puts yes. 
+          # self.success("Eliminacion de #{name}")  if !option.match?(/n(?:o)?|1/) && option.match?(/y(?:es)?|1/) 
         end
       end
 
@@ -40,9 +53,9 @@ module RN
         example [
           '          # Lists every available book'
         ]
-
+        #extend RN::Output
         def call(*)
-          Models::Book.list()
+          puts (Models::Book.list())
         end
       end
 

@@ -34,6 +34,7 @@ module RN
         def call(title:, **options)
           !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
           Models::Note.delete(title, book)
+          
         end
       end
 

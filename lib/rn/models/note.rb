@@ -2,14 +2,32 @@ module RN
   module Models
     class Note
 
-      extend Tool
-      extend Output
+      # extend Tool
+      # extend Output
+
+      attr_accessor :title, :content, :book
       
-      def self.create(title, book)
+      def initialize(title, content, book: nil)
+        self.title = title
+        self.content = content
+        self.book = book || Book.global
+      end
+
+      # Class methods
+      def self.from_file(path, book: nil)
+        title = File.basename(path)
+        content = File.read(path)
+        new(title, content, book: book)
+      end
+
+      
+
+      # 
+      def create(title, book)
           #Valid if the name is correct and if the book exists
-          if self.name_check?(title)
-            if self.book_exist?(book,true)
-              if self.note_exist?(title,book, false)
+          if self.name_check?(self.title)
+            if self.book_exist?(self.book,true)
+              if self.note_exist?(self.title,self.book, false)
                 #Genre the route
                 path = Paths.note_path(title,book)
                 #created the file
