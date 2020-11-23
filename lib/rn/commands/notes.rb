@@ -14,8 +14,8 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
-          Models::Note.create(title,book)
+          options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
+          puts note.create()
         end
       end
 
@@ -32,9 +32,8 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
-          Models::Note.delete(title, book)
-          
+          options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
+          puts note.delete()
         end
       end
 
@@ -51,8 +50,8 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
-          Models::Note.edit(title, book)
+          options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
+          puts note.edit()
         end
       end
 
@@ -70,8 +69,14 @@ module RN
         ]
 
         def call(old_title:, new_title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
-          Models::Note.retitle(old_title, new_title, book)
+          if options[:book].nil?
+            old_note = Models::Note.new(old_title)
+            future_note = Models::Note.new(new_title)
+          else
+            old_note = Models::Note.new(old_title, book: Models::Book.new(options[:book]))
+            future_note = Models::Note.new(new_title, book: Models::Book.new(options[:book]))
+          end
+          puts old_note.retitle(future_note)
         end
       end
 
@@ -92,15 +97,13 @@ module RN
           book = options[:book]
           global = options[:global]
           if global 
-            rute = Paths.book_global_path()
-            book = "global"
+            notes = (Models::Book.global).notes
           elsif book.nil?
-            rute = Paths.book_path("*/")
-            book = "All"
+            notes = Models::Book.all_books_notes
           else
-            rute = Paths.book_path(book)
+            notes = (Models::Book.new(book)).notes
           end
-          Models::Note.list(book, rute)
+          notes != false ? Output.show_info(notes) : (puts notes)
         end
       end
 
@@ -117,8 +120,9 @@ module RN
         ]
 
         def call(title:, **options)
-          !options[:book].nil? ? book = options[:book] : book = Paths::GLOBAL_DIR_NAME
-          Models::Note.show(title,book)
+          options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
+          content = note.show()
+          content != false ? Output.show_info(content) : (puts content)
         end
       end
     end

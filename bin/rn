@@ -15,11 +15,10 @@ $LOAD_PATH.unshift(File.absolute_path("#{__dir__}/../lib"))
 require 'rn'
 
 # Cheaquear si el directorio origen existe,y si no existe lo creo !
-if !File.exist?(RN::Paths::STORAGE_ROOT)
-    Dir.mkdir(RN::Paths::STORAGE_ROOT)
-    Dir.mkdir(RN::Paths.book_global_path())
+if !File.exist?(RN::Helpers::Paths::STORAGE_ROOT)
+    Dir.mkdir(RN::Helpers::Paths::STORAGE_ROOT)
 end 
-
+#(RN::Models::Book.global).create()
 # Ejecuta, utilizando la gema dry-cli, los comandos que permiten utilizar la herramienta
 
 Dry::CLI.new(RN::Commands).call

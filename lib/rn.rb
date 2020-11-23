@@ -7,8 +7,6 @@ module RN
   # Por ejemplo:
   # autoload :Note, 'rn/note'
   autoload :Models, 'rn/models'
-  autoload :Paths, 'rn/paths'
-  autoload :Validator, 'rn/validator'
-  autoload :Output, 'rn/outputs'
+  autoload :Helpers, 'rn/helpers'
 
 end

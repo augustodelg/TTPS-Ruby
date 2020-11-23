@@ -5,82 +5,104 @@ module RN
             #extend Output
             GLOBAL_BOOK_NAME = 'global'
 
-            attr_accessor :name
+            attr_accessor :name, :errors
 
-            extend RN::Tool
+            include RN::Helpers::Validator
 
             def initialize(name)
                 self.name = name
+                self.errors = []
+            end
+
+            def to_s
+                self.name
             end
             
-            #Class methods
+            # Class methods
 
             def self.global
                 new GLOBAL_BOOK_NAME
             end
 
             def self.list()
-                rute = Paths::STORAGE_ROOT
-                array_books = Dir.children(rute) 
-                #self.show_info(array_books)
-                return array_books
+                books = Dir.children(Helpers::Paths::STORAGE_ROOT).map do |book_name|
+                    new book_name
+                end
+                return books 
             end
 
-            def path()
-                return File.join(Paths::STORAGE_ROOT, self.name)
+            def self.all_books_notes
+                all_books = self.list
+                all_notes = []
+                for book in all_books do
+                    all_notes.append(book.notes)
+                end
+                return all_notes
+            end
+
+            # Instance methods
+
+            def path
+                File.join(Helpers::Paths::STORAGE_ROOT, self.name)
             end
 
             def exist?()
-                return File.exist?(self.path())
+                File.exist?(self.path)
+            end
+
+            def global?
+                name == GLOBAL_BOOK_NAME
             end
 
             def create()
                 if self.name_check?(self.name)
                     if not self.exist?()
-                        Dir.mkdir(Paths.book_path(name))
-                        return True
+                        Dir.mkdir(self.path)
+                        return true
                     end
                 end
-                return False
+                return false
             end
 
             def delete_all()
-                FileUtils.rm_rf(rute_book)
+                FileUtils.rm_rf(path)
+                self.create() if self.global?
             end
 
-            def self.delete(name)
-                if self.name_check?(name)
+            def delete()
+                if self.name_check?(self.name)
                     if self.exist?()
-                        rute_book = Paths.book_path(name)
-                        Dir.delete(rute_book)
-                        return True   
+                        Dir.delete(path)
+                        self.create() if self.global?
+                        return true   
                     end
-                return False
                 end
+                return false
             end
 
-            def self.delete_global()
-                self.delete("global")
-                self.create("global")
-            end
+            def rename(future_book)
 
-            def self.rename(old_name, new_name)
-
-                if self.name_check?(new_name) && self.name_check?(old_name)
+                if self.name_check?(self.name) 
                     if self.exist?()
-                        old_book = new (old_name)
-                        if not old_book.exist?()
-                            #Genere the route of old path and new path
-                            old_path = Paths.book_path(old_name)
-                            new_path = Paths.book_path(new_name)
-                            File.rename(old_path, new_path)
-                            return True
+                        if not future_book.exist?() && future_book.name_check?(future_book.name)
+                            #Change the name of actual book
+                            File.rename(self.path, future_book.path)
+                            return true
                         end
-                    else self.not_exist(old_name)
                     end
                 end
-                return False
+                return false
             end
+
+            def notes
+                if self.exist?
+                    return Dir["#{path}/*#{Helpers::Paths.notes_extension}"].map do |note_path|
+                        Note.from_file(note_path, book: self)
+                    end
+                end
+                return false
+            end
+            
         end
     end
 end
