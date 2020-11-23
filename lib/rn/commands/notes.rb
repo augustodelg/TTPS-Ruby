@@ -100,7 +100,7 @@ module RN
           else
             rute = Paths.book_path(book)
           end
-         Models::Note.list(book, rute)
+          Models::Note.list(book, rute)
         end
       end
 

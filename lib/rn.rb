@@ -8,7 +8,7 @@ module RN
   # autoload :Note, 'rn/note'
   autoload :Models, 'rn/models'
   autoload :Paths, 'rn/paths'
-  autoload :Tool, 'rn/tools'
+  autoload :Validator, 'rn/validator'
   autoload :Output, 'rn/outputs'
 
 end

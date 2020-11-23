@@ -76,6 +76,7 @@ module RN
                             File.rename(old_path, new_path)
                             return True
                         end
+                    else self.not_exist(old_name)
                     end
                 end
                 return False

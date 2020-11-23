@@ -42,15 +42,12 @@ module RN
       end
         
       def self.delete(title, book)
-
-
         #Valid if the name is correct and if the book exists
         if self.name_check?(title)
           if self.book_exist?(book,true)
             if self.note_exist?(title, book, true)
               #Genre the route
               path = Paths.note_path(title,book)
-
               #Deleted the file
               File.delete(path)
               self.success("Nota #{title} eliminada")
@@ -63,8 +60,7 @@ module RN
         end
       end
 
-      def self.retitle(old_title, new_title, book)
-        
+      def self.retitle(old_title, new_title, book) 
         #Valid if the name is correct and if the book exists
         if self.name_check?(new_title)
           if self.book_exist?(book,true)
@@ -73,9 +69,8 @@ module RN
                 #Genere the route of old path and new path
                 old_path = Paths.note_path(old_title, book)
                 new_path = Paths.note_path(new_title, book)
-
                 File.rename(old_path, new_path)
-                self.success("Cambio de nombre")
+                self.success("Cambio de nombre de #{old_title} a #{new_title} ")
               else self.exist(new_title)
               end
             else self.not_exist(old_title)
@@ -87,14 +82,13 @@ module RN
       end
       
       def self.list(book, rute)
-
         unless book != "All"
             exist = true
           else
             exist = self.book_exist?(book,true)
         end
         if exist
-          notes = Dir.glob(File.join(rute, "*.rn")).map{|each| book == "All" ? each = (each[4..]).sub('/', ' <--- ') : each = File.basename(each)}
+          notes = Dir.glob(File.join(rute, "*.rn")).map{|each| book == "All" ? each = (each[18..]).sub('/', ' <-- ') : each = File.basename(each)}
           self.show_info(notes)
         else self.not_exist(book)
         end
@@ -113,7 +107,6 @@ module RN
       end
 
       def self.show(title,book)
-          #Checking if the new name is correct
           if self.name_check?(title)
             if self.book_exist?(book,true)
               if self.note_exist?(title,book, true)
