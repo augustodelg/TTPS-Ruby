@@ -97,13 +97,15 @@ module RN
           book = options[:book]
           global = options[:global]
           if global 
+            # Export all notes from global dir
             notes = (Models::Book.global).notes
           elsif book.nil?
+            # Export all notes form all books
             notes = Models::Book.all_books_notes
           else
             notes = (Models::Book.new(book)).notes
           end
-          notes != false ? Output.show_info(notes) : (puts notes)
+          notes != false ? Helpers::Output.show_info(notes) : (puts notes)
         end
       end
 
@@ -123,6 +125,47 @@ module RN
           options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
           content = note.show()
           content != false ? Output.show_info(content) : (puts content)
+        end
+      end
+
+      class Export < Dry::CLI::Command
+        desc 'Export notes'
+
+        argument :title, desc: 'Title of the note'
+        option :book, type: :string, desc: 'Book'
+        option :global, type: :boolean, default: false, desc: 'Export only notes from the global book'
+
+        example [
+          '                             # Export all notes titled from all books',
+          '--global                     # Export all notes titled from the gobal book',
+          '--book BookName              # Export all notes from the book "BookName"',
+          'todo                         # Export a note titled "todo" from the global book',
+          '"Name note" --book "My book" # Export a note titled "Name note" from the book "My book"',
+          'aNote --book Memoires        # Export a note titled "aNote" from the book "Memoires"',
+        ]
+
+        def call(**options)
+          # TODO MAKE FILETE OF THES METHODS
+          title = options[:title]
+          book = options[:book]
+          global = options[:global]
+          if global
+            (Models::Book.global).export
+          else 
+            if not book.nil? 
+              if not title.nil?
+                # Export a note from a specific book
+                (Models::Note.new(title,book: Models::Book.new(book))).export
+              else
+                (Models::Book.new(book)).export
+              end
+            elsif not title.nil?
+              #Export a note from global book
+              (Models::Note.new(title)).export
+            else
+              Models::Book.export_all_books_notes
+            end
+          end
         end
       end
     end

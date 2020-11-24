@@ -5,7 +5,7 @@ module RN
       include RN::Helpers::Validator
       # extend Output
 
-      attr_accessor :title, :book, :errors
+      attr_accessor :title, :book
       
       def initialize(title, book: nil)
         self.title = title
@@ -18,7 +18,7 @@ module RN
 
       # Class methods
       def self.from_file(path, book: nil)
-        title = File.basename(path)
+        title = File.basename(path).gsub(Helpers::Paths.notes_extension, "")
         new(title, book: book)
       end
 
@@ -108,6 +108,18 @@ module RN
             end
           end
           return false
+      end
+      def export
+        if self.name_check?(self.title)
+          if (self.book).exist?()
+            if self.exist?()
+              exporter = Helpers::Exporter.new()
+              exporter.export_note(self)
+              return true
+            end
+          end
+        end
+        return false
       end
     end
   end

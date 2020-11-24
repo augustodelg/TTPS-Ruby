@@ -40,6 +40,12 @@ module RN
                 return all_notes
             end
 
+            def self.export_all_books_notes
+                exporter = Helpers::Exporter.new()
+                # TODO MAKE EXPORT WITH BOOK NAME
+                exporter.export_all(self.all_books_notes)
+            end
+
             # Instance methods
 
             def path
@@ -81,7 +87,6 @@ module RN
             end
 
             def rename(future_book)
-
                 if self.name_check?(self.name) 
                     if self.exist?()
                         if not future_book.exist?() && future_book.name_check?(future_book.name)
@@ -98,6 +103,17 @@ module RN
                 if self.exist?
                     return Dir["#{path}/*#{Helpers::Paths.notes_extension}"].map do |note_path|
                         Note.from_file(note_path, book: self)
+                    end
+                end
+                return false
+            end
+
+            def export
+                if self.name_check?(self.name) 
+                    if self.exist?()
+                        exporter = Helpers::Exporter.new()
+                        exporter.export_all(self.notes)
+                        return true
                     end
                 end
                 return false
