@@ -15,7 +15,7 @@ module RN
 
         def call(title:, **options)
           options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
-          puts note.create()
+          note.create() ? Helpers::Output.success("Creacion de #{title} realizada"): Helpers::Output.error()
         end
       end
 
@@ -33,7 +33,7 @@ module RN
 
         def call(title:, **options)
           options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
-          puts note.delete()
+          note.delete() ? Helpers::Output.success("Eliminacion de #{title} realizada"): Helpers::Output.error()
         end
       end
 
@@ -51,7 +51,7 @@ module RN
 
         def call(title:, **options)
           options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
-          puts note.edit()
+          note.edit() ? Helpers::Output.success("Edición de #{title} realizada"): Helpers::Output.error()
         end
       end
 
@@ -76,7 +76,7 @@ module RN
             old_note = Models::Note.new(old_title, book: Models::Book.new(options[:book]))
             future_note = Models::Note.new(new_title, book: Models::Book.new(options[:book]))
           end
-          puts old_note.retitle(future_note)
+          old_note.retitle(future_note) ? Helpers::Output.success("Cambio de nombre de #{old_title} a #{new_title} ") : Helpers::Output.error()
         end
       end
 
@@ -105,7 +105,7 @@ module RN
           else
             notes = (Models::Book.new(book)).notes
           end
-          notes != false ? Helpers::Output.show_info(notes) : (puts notes)
+          notes != false ? Helpers::Output.show_info(notes) : Helpers::Output.error()
         end
       end
 
@@ -124,7 +124,7 @@ module RN
         def call(title:, **options)
           options[:book].nil? ? note = Models::Note.new(title) : note = Models::Note.new(title, book: Models::Book.new(options[:book]))
           content = note.show()
-          content != false ? Output.show_info(content) : (puts content)
+          content != false ? Output.show_info(content) : Helpers::Output.error()
         end
       end
 
@@ -163,7 +163,7 @@ module RN
               #Export a note from global book
               (Models::Note.new(title)).export
             else
-              Models::Book.export_all_books_notes
+              Models::Book.export_all_books_notes ? Helpers::Output.success("La exportacion sea a realizado"): Helpers::Output.error()
             end
           end
         end

@@ -1,11 +1,12 @@
 module RN
     module Helpers
       class Exporter
+
         attr_accessor :path,:tool_exporter
       
-        def initialize(path: Dir.pwd)
-          self.path = File.join(path, "export - #{(Time.now).to_s}")
-          self.tool_exporter =  Redcarpet::Markdown.new(Redcarpet::Render::HTML, extensions = {})
+        def initialize(path_export: Dir.pwd)
+          self.path = File.join(path_export, "export - #{(Time.now).to_s}")
+          self.tool_exporter =  Redcarpet::Markdown.new(Redcarpet::Render::XHTML, autolink: true, tables: true, fenced_code_blocks: true,footnotes: true)
           Dir.mkdir(path)
         end
 

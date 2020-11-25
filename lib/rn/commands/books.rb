@@ -14,7 +14,7 @@ module RN
 
         def call(name:, **)
           book = Models::Book.new(name)
-          puts book.create()
+          book.create() ? Helpers::Output.success("Creacion de #{name} realizada ") : Helpers::Output.error()
         end
       end
 
@@ -34,13 +34,13 @@ module RN
           begin
             global = options[:global]
             global ? book = Models::Book.global : book = Models::Book.new(name)
-            Output.success("Eliminacion de #{book.name}") if book.delete()
+            book.delete() ? Output.success("Eliminacion de #{name} realizada ") : Helpers::Output.error()
             #If the book not empty, need ask if secure delete this
             rescue Errno::ENOTEMPTY
               puts "La carpeta que desea borrar contiene notas, esta seguro que desea borrarla? (yes/no)"
               option = $stdin.gets
               if option.match?(/y(?:es)?|1/) 
-                Output.success("Eliminacion de #{name}") if book.delete_all()
+                 book.delete_all() ? Helpers::Output.success("Eliminacion de #{name} realizada ") : Helpers::Output.error()
               end
           end
           # Sampling that was eliminated if you enter yes, in case of be need puts yes. 
@@ -55,7 +55,7 @@ module RN
           '          # Lists every available book'
         ]
         def call(*)
-          Output.show_info (Models::Book.list())
+          Helpers::Output.show_info (Models::Book.list())
         end
       end
 
@@ -74,7 +74,7 @@ module RN
         def call(old_name:, new_name:, **)
           book =  Models::Book.new (old_name)
           future_book = Models::Book.new (new_name)
-          puts book.rename(future_book)
+          book.rename(future_book) ? Helpers::Output.success("Cambio de nombre de #{old_name} a #{new_name} "): Helpers::Output.error()
         end
       end
     end
