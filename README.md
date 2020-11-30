@@ -52,6 +52,7 @@ Profundizando en cada parte de la estructura anterior podemos decir:
 ### Gemas
 - **[Dry-cli](https://dry-rb.org/gems/dry-cli/0.6/)**: es una framework de proposito general, que nos permite desarrollar aplicaciones de Command Line Interface (CLI) .
 - **[Tty-editor](https://github.com/piotrmurach/tty-editor)**: nos provee una forma fácil y sencilla de incorporar el uso de editores de texto a nuestra aplicacion resolviendo muchos inconvenientes que podrian aparecer.
+- **[Redcarpet](https://github.com/vmg/redcarpet)**: Es una libreria dedicada a exportar "Markdown" (texto rico)
 
 ### Información
 
@@ -62,6 +63,7 @@ Profundizando en cada parte de la estructura anterior podemos decir:
 
 - Al utilizar el metodo edit de las notas, se utilizara el editor **nano**. Una guia de como utilizar nano.   **[GUIA](https://www.comoinstalarlinux.com/como-usar-el-editor-nano-linux/2/)  - [Video](https://www.youtube.com/watch?v=RlPmmdcLe8g)**
 
+- Cheat Sheet de Markdown [Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
 
 
 # rn
