@@ -1,0 +1,25 @@
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>MY NOTES</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <p>Bienvenido <%= current_user.email %></p>
+
+            <li>
+                <%= link_to 'Book', books_path %>
+            </li>
+            <li>
+                <%= link_to 'Profile', edit_user_registration_path %>
+            </li>
+            <li>
+                <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete %>
+            </li>
+
+            
+        </ul>
+    </nav>
+
+
+

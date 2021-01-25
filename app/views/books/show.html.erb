@@ -1,0 +1,28 @@
+
+
+<p>
+  <strong>Name:</strong>
+  <%= @book.name %>
+</p>
+<table class="table" >
+  <thead class="table-dark">
+    <tr>
+      <th>Title</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @book.notes.each do |note| %>
+      <tr>
+        <td><%= note.title %></td>
+        <td><%= link_to 'Show', note %></td>
+        <td><%= link_to 'Edit', edit_note_path(note) %></td>
+        <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Edit', edit_book_path(@book) %> |
+<%= link_to 'Back', books_path %>

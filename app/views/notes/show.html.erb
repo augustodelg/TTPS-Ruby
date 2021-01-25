@@ -1,0 +1,11 @@
+
+<div class="card">
+  <h5 class="card-header"><%= @note.title %></h5>
+  <div class="card-body">
+    <h5 class="card-title"> From: <%= @note.book.name %></h5>
+    <%= @note.content %>
+
+    <%= link_to 'Edit', edit_note_path(@note),:class => "btn btn-primary" %>
+    <%= link_to 'Back', notes_path,:class => "btn btn-primary" %> 
+  </div>
+</div>
