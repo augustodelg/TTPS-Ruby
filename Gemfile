@@ -22,7 +22,7 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
-gem 'semantic-ui-sass', '~> 2.4', '>= 2.4.2.0'
+gem 'grover'
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'
 gem 'rack-cors'

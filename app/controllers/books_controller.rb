@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_note]
+  before_action :set_book, only: [:show, :edit, :update, :destroy]
 
   # GET /books
   # GET /books.json
@@ -40,12 +40,16 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/1.json
   def update
     respond_to do |format|
-      if @book.update(book_params)
-        format.html { redirect_to @book, notice: 'Book was successfully updated.' }
-        format.json { render :show, status: :ok, location: @book }
+      if @book.name == 'Global'
+        format.html { redirect_to @book, alert: "You can't  update the title of the global book!" }
       else
-        format.html { render :edit }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        if @book.update(book_params)
+          format.html { redirect_to @book, notice: 'Book was successfully updated.' }
+          format.json { render :show, status: :ok, location: @book }
+        else
+          format.html { render :edit }
+          format.json { render json: @book.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -53,8 +57,14 @@ class BooksController < ApplicationController
   # DELETE /books/1
   # DELETE /books/1.json
   def destroy
-    @book.destroy
+    
     respond_to do |format|
+      if @book.name == 'Global'
+        format.html { redirect_to books_url, alert: "You can't  delete the global book!" }
+        format.json { render json: 'You don`t delete the global book!' }
+      else
+        @book.destroy
+      end
       format.html { redirect_to books_url, notice: 'Book was successfully destroyed.' }
       format.json { head :no_content }
     end
@@ -70,5 +80,6 @@ class BooksController < ApplicationController
     def book_params
       params.require(:book).permit(:name)
     end
+
 
 end

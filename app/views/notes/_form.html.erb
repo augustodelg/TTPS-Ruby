@@ -12,14 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+    <div class="mb-3">
+      <%= form.label :title, :class => "form-label"%>
+      <%= form.text_field :title, :class => "form-control"%>
+    </div>
     <%= form.hidden_field :id_book, value: note.book.id %>
-    <%= form.label :content %>
-    <%= form.rich_text_area :content %>
+    <div class="container box p-4">
+      <div class="mb-3">
+        <%= form.label :content, :class => "form-label" %>
+        <%= form.rich_text_area :content%>
+      </div>
+    </div>
+  
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit :class => " btn btn-dark btn-block" %>
   </div>
 <% end %>
