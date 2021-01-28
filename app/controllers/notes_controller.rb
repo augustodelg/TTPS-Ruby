@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: [:show, :edit, :update, :destroy]
+  before_action :set_note, only: [:show, :edit, :update, :destroy, :download]
 
   # GET /notes
   # GET /notes.json
@@ -59,6 +59,11 @@ class NotesController < ApplicationController
       format.html { redirect_to notes_url, notice: 'Note was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def download
+    p @note.content
+    send_data (Grover.new(@note.content.body.to_s).to_pdf), :filename => "#{@note.title}.pdf"
   end
 
   private

@@ -2,21 +2,24 @@
 <div class="row">
   <div class="col-5 col-xl-5">
     <p>
-    <strong>Name:</strong>
-    <h1 class="title"><%= @book.name %></h1>
-  </p>
+      <strong>Name:</strong>
+        </p>
+      <h1 class="title"><%= @book.name %></h1>
+
   </div>
-  <div class="col">
-  <%= link_to '+ NEW NOTE', new_note_path(:id_book => @book.id), :class => "btn btn-outline-dark "%>
-  </div>
+</div>
+  <div class="row justify-content-center">
+<%= link_to '+ NEW NOTE', new_note_path(:id_book => @book.id), :class => "btn btn-outline-dark "%>
 </div>
 
 
-<div class="container">
-  <div class="row justify-content-center">
+
+
+<div class="container text-center">
+  <div class="row justify-content-start">
   <% @book.notes.each do |note| %>
-  <div class="col align-self-center m-3">
-  <div class="card text-center" style="max-width: 70em; min-width: 15em;">
+  <div class="col-12 col-md-3 align-self-center m-4">
+  <div class="box text-center" style="max-width: 20em; min-width: 18em;">
     <div class="row justify-content-center">
       <div class="col align-self-center">
         <div class="card-body">
@@ -24,10 +27,10 @@
           <p class="updated-text"><small class=" ">Updated <%= truncate(note.updated_at.to_s, length: 20,:omission => '') %></small></p>  
           <div class="btn-group-vertical ">
 
-              <%= link_to '<i class="far fa-sticky-note"></i> Show'.html_safe , note ,:class => "btn btn-outline-dark "%>
+              <%= link_to '<i class="fas fa-eye"></i></i> Show'.html_safe , note ,:class => "btn btn-outline-dark "%>
 
               <%= link_to '<i class="far fa-edit"></i> Edit'.html_safe , edit_note_path(note),:class => "btn btn-outline-dark " %>
-
+              <%= link_to '<i class="fas fa-download"></i> Download'.html_safe , download_note_path_path(note) ,:class => "btn btn-outline-dark " %>
 
               <%= link_to  '<i class="far fa-trash-alt"></i> Destroy'.html_safe, note, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-outline-dark " %>
           </div>
@@ -41,4 +44,3 @@
   <% end %>
   </div>
   </div>
-

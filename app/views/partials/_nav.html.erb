@@ -5,10 +5,13 @@
         </div>
 
         <ul class="list-unstyled components">
-            <p>Bienvenido <%= current_user.email %></p>
+            <p>Welcome <%= current_user.email %></p>
 
             <li>
                 <%= link_to 'Book', books_path %>
+            </li>
+            <li>
+                <%= link_to 'Notes', notes_path %>
             </li>
             <li>
                 <%= link_to 'Profile', edit_user_registration_path %>
