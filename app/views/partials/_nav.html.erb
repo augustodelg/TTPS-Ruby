@@ -8,7 +8,7 @@
             <p>Welcome <%= current_user.email %></p>
 
             <li>
-                <%= link_to 'Book', books_path %>
+                <%= link_to 'Books', books_path %>
             </li>
             <li>
                 <%= link_to 'Notes', notes_path %>
@@ -17,7 +17,7 @@
                 <%= link_to 'Profile', edit_user_registration_path %>
             </li>
             <li>
-                <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete %>
+                <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
             </li>
 
             
