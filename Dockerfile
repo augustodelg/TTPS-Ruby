@@ -3,14 +3,14 @@ RUN apk add -U --no-cache bash g++ git less make mysql-dev nodejs openssh-client
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
-RUN ls
+COPY package.json /myapp/package.json
+COPY package-lock.json /myapp/package-lock.json
 RUN bundle install
+RUN yarn install
 VOLUME .:/myapp
-RUN ls
 RUN bundle exec rails db:create 
 RUN bundle exec rails db:migrate
 EXPOSE 3000
-RUN ls
 # Start the main process.
 CMD ["rails", "server","-b", "0.0.0.0"]
-RUN yarn install
+

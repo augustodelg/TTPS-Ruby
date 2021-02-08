@@ -23,4 +23,5 @@ services:
       - mysql
     links:
       - mysql
+    container_name: rails-mynotes
   
