@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: mysql:8.0.23 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mynotes
+    volumes:
+      - ~/docker/mysql-data:/var/lib/mysql
+    container_name: mysql-rails
+    
+  ruby:
+    ports:
+      - 8080:3000
+    build: .
+    command: bash -c "rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    environment:
+      RAILS_ENV: development
+    depends_on:
+      - mysql
+    links:
+      - mysql
+  
