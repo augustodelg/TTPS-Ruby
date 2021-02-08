@@ -5,6 +5,7 @@ COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 COPY package.json /myapp/package.json
 COPY package-lock.json /myapp/package-lock.json
+COPY yarn.lock /myapp/yarn.lock
 RUN bundle install
 RUN yarn install
 VOLUME .:/myapp
